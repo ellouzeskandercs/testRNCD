@@ -1,7 +1,7 @@
 name: Quality Check
 
 on:
-  push:
+  - push
 
 jobs:
   build:
