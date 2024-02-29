@@ -1,0 +1,21 @@
+fastlane_require 'dotenv'
+
+before_all do
+  Dotenv.overload '.env'
+end
+
+lane :hard_deploy do
+  gradle(
+    task: "assemble",
+    build_type: "Release",
+    project_dir: "android"
+  )
+
+  appcenter_upload(
+    api_token: ENV['ANDROID_APPCENTER_API_TOKEN'],
+    owner_name: "marines-bam.tech",
+    owner_type: "user", # Default is user - set to organization for appcenter organizations
+    app_name: "AppSomme_Android",
+    file: "./android/app/build/outputs/apk/release/app-release.apk",
+)
+end
