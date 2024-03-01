@@ -1,0 +1,24 @@
+name: Hard Deploy Android
+
+on:
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'v20.10.0'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install JS dependencies
+        run: yarn install
+      - name: Deploy Android
+        run: bundle exec fastlane hard_deploy
+        env:
+          ANDROID_APPCENTER_API_TOKEN: ${{ secrets.ANDROID_APPCENTER_API_TOKEN }}
